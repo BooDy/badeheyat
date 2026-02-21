@@ -1,0 +1,39 @@
+name: Microservice CI
+
+on:
+  push:
+    paths:
+      - 'microservice/**'
+      - '.github/workflows/ci-microservice.yml'
+  pull_request:
+    paths:
+      - 'microservice/**'
+      - '.github/workflows/ci-microservice.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: microservice
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: microservice/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run build
+        run: npm run build

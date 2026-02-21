@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "axioms",
+  "info": {
+    "singularName": "axiom",
+    "pluralName": "axioms",
+    "displayName": "Axiom",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "badArgument": {
+      "type": "text",
+      "required": true
+    },
+    "rebuttalFacts": {
+      "type": "json",
+      "required": true
+    },
+    "detailedBody": {
+      "type": "blocks"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "axioms"
+    },
+    "imageOg": {
+      "type": "string"
+    },
+    "imageSquare": {
+      "type": "string"
+    },
+    "imageStory": {
+      "type": "string"
+    }
+  }
+}

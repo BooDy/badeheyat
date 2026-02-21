@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categories",
+  "info": {
+    "singularName": "category",
+    "pluralName": "categories",
+    "displayName": "Category",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "themeKey": {
+      "type": "string",
+      "required": true
+    },
+    "axioms": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::axiom.axiom",
+      "mappedBy": "category"
+    }
+  }
+}
