@@ -19,22 +19,25 @@ export async function generateMetadata({ params }: AxiomPageProps): Promise<Meta
   if (!axiom) return { title: 'بديهية غير موجودة' };
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://badeheyat.com';
-  const factsText = axiom.rebuttalFacts?.map(f => f.text).join(' • ') || '';
   
   // Use absolute URL for the image
-  const imageRelativePath = axiom.imageOg || `/media/axioms/${axiom.slug}-og.png`;
+  // The microservice saves images as /media/axioms/[slug]-og.png
+  const imageRelativePath = `/media/axioms/${axiom.slug}-og.png`;
   const imageUrl = `${baseUrl}${imageRelativePath}`;
   const canonicalUrl = `${baseUrl}/a/${axiom.slug}`;
+  
+  const pageTitle = `رد قاطع على: ${axiom.badArgument}`;
+  const description = axiom.badArgument;
 
   return {
-    title: `${axiom.badArgument} - بديهيات`,
-    description: factsText,
+    title: pageTitle,
+    description: description,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: axiom.badArgument,
-      description: factsText,
+      title: pageTitle,
+      description: description,
       url: canonicalUrl,
       images: [
         {
@@ -48,8 +51,8 @@ export async function generateMetadata({ params }: AxiomPageProps): Promise<Meta
     },
     twitter: {
       card: 'summary_large_image',
-      title: axiom.badArgument,
-      description: factsText,
+      title: pageTitle,
+      description: description,
       images: [imageUrl],
     },
   };
