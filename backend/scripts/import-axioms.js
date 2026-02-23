@@ -13,6 +13,19 @@ if (!STRAPI_TOKEN) {
   process.exit(1);
 }
 
+// SLUGIFY HELPER (Supports Arabic)
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w\u0621-\u064A-]+/g, '') // Remove all non-word chars (keep Arabic letters/numbers)
+    .replace(/--+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start
+    .replace(/-+$/, ''); // Trim - from end
+}
+
 async function run() {
   console.log('\n=============================================');
   console.log('   🚀 BADEHEYAT BULK IMPORT INITIATED');
@@ -94,6 +107,7 @@ async function run() {
     const payload = {
       data: {
         badArgument: claim,
+        slug: slugify(claim),
         category: categoryDocId,
         rebuttalFacts: rebuttalFacts,
       }
