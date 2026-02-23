@@ -13,15 +13,23 @@ if (!STRAPI_TOKEN) {
   process.exit(1);
 }
 
-// SLUGIFY HELPER (Supports Arabic)
+// SLUGIFY HELPER (Transliterates Arabic to Latin for Strapi compatibility)
 function slugify(text) {
+  const map = {
+    'أ': 'a', 'ا': 'a', 'إ': 'a', 'آ': 'a', 'ب': 'b', 'ت': 't', 'ة': 't', 'ث': 'th', 
+    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z', 'س': 's', 
+    'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'e', 'غ': 'gh', 'ف': 'f', 
+    'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'y',
+    ' ': '-', '؟': '', '?': '', '!': '', '.': '', ',': '', '،': ''
+  };
+
   return text
     .toString()
     .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-') // Replace spaces with -
-    .replace(/[^\w\u0621-\u064A-]+/g, '') // Remove all non-word chars (keep Arabic letters/numbers)
-    .replace(/--+/g, '-') // Replace multiple - with single -
+    .split('')
+    .map(char => map[char] || (/[a-z0-9-]/.test(char) ? char : ''))
+    .join('')
+    .replace(/-+/g, '-') // Replace multiple - with single -
     .replace(/^-+/, '') // Trim - from start
     .replace(/-+$/, ''); // Trim - from end
 }
