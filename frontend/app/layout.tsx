@@ -20,8 +20,33 @@ const arefRuqaa = Aref_Ruqaa({
 });
 
 export const metadata: Metadata = {
-  title: "بديهيات - علشان إحنا بنهاتي في خراء",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://badeheyat.com'),
+  title: {
+    default: "بديهيات - علشان إحنا بنهاتي في خراء",
+    template: "%s | بديهيات"
+  },
   description: "منصة لاستضافة محتوى تعليمي قابل للمشاركة، مصمم لعدم تضييع الوقت في نقاشات تافهة بدائية بردود واقعية ومتميزة بصرياً.",
+  openGraph: {
+    title: "بديهيات - علشان إحنا بنهاتي في خراء",
+    description: "منصة لاستضافة محتوى تعليمي قابل للمشاركة، مصمم لعدم تضييع الوقت في نقاشات تافهة بدائية بردود واقعية ومتميزة بصرياً.",
+    url: "/",
+    siteName: "بديهيات",
+    images: [
+      {
+        url: "/og-main.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "ar_EG",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "بديهيات - علشان إحنا بنهاتي في خراء",
+    description: "منصة لاستضافة محتوى تعليمي قابل للمشاركة، مصمم لعدم تضييع الوقت في نقاشات تافهة بدائية بردود واقعية ومتميزة بصرياً.",
+    images: ["/og-main.png"],
+  },
 };
 
 export default function RootLayout({

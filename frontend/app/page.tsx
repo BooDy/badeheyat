@@ -8,17 +8,33 @@ export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://badeheyat.com';
+  const ogImageUrl = `${baseUrl}/og-main.png`;
   
   return {
     alternates: {
       canonical: baseUrl,
     },
     openGraph: {
-      title: 'بديهيات - علشان إحنا بنهاتي',
+      title: 'بديهيات - علشان إحنا بنهاتي في خراء',
       description: 'منصة لاستضافة محتوى تعليمي قابل للمشاركة، مصمم لعدم تضييع الوقت في نقاشات تافهة بدائية بردود واقعية ومتميزة بصرياً.',
       url: baseUrl,
       siteName: 'بديهيات',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: 'بديهيات - مركز مكافحة الهبل',
+        },
+      ],
+      locale: 'ar_EG',
       type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'بديهيات - علشان إحنا بنهاتي في خراء',
+      description: 'منصة لاستضافة محتوى تعليمي قابل للمشاركة، مصمم لعدم تضييع الوقت في نقاشات تافهة بدائية بردود واقعية ومتميزة بصرياً.',
+      images: [ogImageUrl],
     },
   };
 }
