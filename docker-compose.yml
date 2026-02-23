@@ -40,7 +40,7 @@ services:
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
       MICROSERVICE_URL: ${MICROSERVICE_URL:-http://microservice:4000}
     volumes:
-      - shared-media:/opt/app/public/uploads
+      - ./shared-media:/opt/app/public/uploads
     ports:
       - "1337:1337"
     depends_on:
@@ -60,7 +60,7 @@ services:
       STRAPI_API_URL: ${STRAPI_API_URL}
       STRAPI_API_TOKEN: ${MICROSERVICE_STRAPI_TOKEN}
     volumes:
-      - shared-media:/shared-media
+      - ./shared-media:/shared-media
     depends_on:
       - strapi
     networks:
@@ -76,8 +76,9 @@ services:
       STRAPI_API_URL: ${STRAPI_API_URL}
       STRAPI_API_TOKEN: ${FRONTEND_STRAPI_TOKEN}
       NEXT_PUBLIC_STRAPI_API_URL: ${NEXT_PUBLIC_STRAPI_API_URL}
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
     volumes:
-      - shared-media:/app/public/media:ro
+      - ./shared-media:/app/public/media:ro
     ports:
       - "${FRONTEND_PORT:-3000}:3000"
     depends_on:
@@ -93,5 +94,3 @@ networks:
 volumes:
   postgres-data:
     name: badeheyaat-postgres-data
-  shared-media:
-    name: badeheyaat-shared-media
