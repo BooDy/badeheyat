@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_references",
+  "info": {
+    "displayName": "Reference",
+    "icon": "link",
+    "description": "External links and resources"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

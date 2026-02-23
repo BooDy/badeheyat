@@ -16,9 +16,20 @@
       "type": "text",
       "required": true
     },
-    "rebuttalFacts": {
-      "type": "json",
+    "slug": {
+      "type": "uid",
+      "targetField": "badArgument",
       "required": true
+    },
+    "rebuttalFacts": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.fact"
+    },
+    "references": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.reference"
     },
     "detailedBody": {
       "type": "blocks"

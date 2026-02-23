@@ -1,4 +1,4 @@
-FROM node:20-slim AS builder
+FROM node:22-slim AS builder
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM node:20-slim
+FROM node:22-slim
 
 WORKDIR /app
 
@@ -16,8 +16,10 @@ COPY package*.json ./
 RUN npm install --omit=dev
 
 COPY --from=builder /app/dist ./dist
+# Copy assets directory specifically
+COPY --from=builder /app/src/assets ./assets
 
-# Create shared-media directory if it doesn't exist (it will be mounted)
+# Create shared-media directory
 RUN mkdir -p /shared-media
 
 EXPOSE 4000

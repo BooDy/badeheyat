@@ -32,15 +32,15 @@ services:
       DATABASE_NAME: ${DATABASE_NAME:-badeheyaat}
       DATABASE_USERNAME: ${DATABASE_USERNAME:-badeheyaat_user}
       DATABASE_PASSWORD: ${DATABASE_PASSWORD:-badeheyaat_password}
-      ADMIN_JWT_SECRET: ${STRAPI_ADMIN_JWT_SECRET}
-      API_TOKEN_SALT: ${STRAPI_API_TOKEN_SALT}
-      TRANSFER_TOKEN_SALT: ${STRAPI_TRANSFER_TOKEN_SALT}
-      APP_KEYS: ${STRAPI_APP_KEYS}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      APP_KEYS: ${APP_KEYS}
       JWT_SECRET: ${JWT_SECRET}
-      ENCRYPTION_KEY: ${STRAPI_ENCRYPTION_KEY}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+      MICROSERVICE_URL: ${MICROSERVICE_URL:-http://microservice:4000}
     volumes:
-      - ./backend:/app
-      - shared-media:/app/public/uploads
+      - shared-media:/opt/app/public/uploads
     ports:
       - "1337:1337"
     depends_on:
@@ -56,11 +56,10 @@ services:
     container_name: badeheyaat-microservice
     restart: always
     environment:
-      PORT: 4000
-      STRAPI_API_URL: http://strapi:1337
-      STRAPI_API_TOKEN: ${STRAPI_API_TOKEN}
+      PORT: ${MICROSERVICE_PORT:-4000}
+      STRAPI_API_URL: ${STRAPI_API_URL}
+      STRAPI_API_TOKEN: ${MICROSERVICE_STRAPI_TOKEN}
     volumes:
-      - ./microservice:/app
       - shared-media:/shared-media
     depends_on:
       - strapi
@@ -74,13 +73,13 @@ services:
     container_name: badeheyaat-frontend
     restart: always
     environment:
-      STRAPI_API_URL: http://strapi:1337
-      NEXT_PUBLIC_STRAPI_API_URL: ${NEXT_PUBLIC_STRAPI_API_URL:-http://localhost:1337}
+      STRAPI_API_URL: ${STRAPI_API_URL}
+      STRAPI_API_TOKEN: ${FRONTEND_STRAPI_TOKEN}
+      NEXT_PUBLIC_STRAPI_API_URL: ${NEXT_PUBLIC_STRAPI_API_URL}
     volumes:
-      - ./frontend:/app
       - shared-media:/app/public/media:ro
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT:-3000}:3000"
     depends_on:
       - strapi
     networks:

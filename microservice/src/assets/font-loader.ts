@@ -1,4 +1,5 @@
-import axios from 'axios';
+import fs from 'fs/promises';
+import path from 'path';
 
 let fontData: ArrayBuffer | null = null;
 
@@ -7,18 +8,28 @@ export async function loadFont(): Promise<ArrayBuffer> {
     return fontData;
   }
 
-  // Using a direct link to the TTF file for IBM Plex Sans Arabic
-  // This is a common CDN for Google Fonts
-  const fontUrl = 'https://github.com/google/fonts/raw/main/ofl/ibmplexsansarabic/IBMPlexSansArabic-Bold.ttf';
-  
-  try {
-    const response = await axios.get(fontUrl, {
-      responseType: 'arraybuffer',
-    });
-    fontData = response.data;
-    return fontData!;
-  } catch (error) {
-    console.error('Failed to load font:', error);
-    throw new Error('Could not load font');
+  // Look in multiple possible locations
+  const possiblePaths = [
+    path.join(process.cwd(), 'assets', 'fonts', 'IBM-Plex-Sans-Arabic-Bold.ttf'),
+    path.join(process.cwd(), 'src', 'assets', 'fonts', 'IBM-Plex-Sans-Arabic-Bold.ttf'),
+    path.join(__dirname, 'fonts', 'IBM-Plex-Sans-Arabic-Bold.ttf'),
+    '/app/assets/fonts/IBM-Plex-Sans-Arabic-Bold.ttf'
+  ];
+
+  for (const fontPath of possiblePaths) {
+    try {
+      console.log(`[FontLoader] Checking: ${fontPath}`);
+      await fs.access(fontPath);
+      const data = await fs.readFile(fontPath);
+      fontData = data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
+      console.log(`[FontLoader] SUCCESS: ${fontPath} (${data.length} bytes)`);
+      return fontData!;
+    } catch (err) {
+      // console.log(`[FontLoader] Not found at ${fontPath}`);
+      continue;
+    }
   }
+
+  console.error('CRITICAL: No local font file found in any expected location.');
+  throw new Error('Font file not found. Please ensure IBM-Plex-Sans-Arabic-Bold.ttf is in microservice/assets/fonts/');
 }

@@ -22,6 +22,7 @@ export async function updateAxiomImages(
           Authorization: `Bearer ${STRAPI_API_TOKEN}`,
           'Content-Type': 'application/json',
         },
+        timeout: 30000, // 30 second timeout
       }
     );
     return response.data;

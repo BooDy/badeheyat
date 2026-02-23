@@ -29,7 +29,7 @@ export default function DownloadButton({ url, filename, label }: DownloadButtonP
   return (
     <button
       onClick={handleDownload}
-      className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-colors shadow-sm hover:shadow-md active:scale-95"
+      className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-blue text-white font-black text-lg border-4 border-brand-blue hover:bg-white hover:text-brand-blue transition-all shadow-hard-red w-full"
     >
       <Download size={20} />
       <span>{label}</span>

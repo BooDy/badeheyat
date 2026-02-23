@@ -11,10 +11,20 @@ Badeheyaat is an open-source web platform hosting shareable, educational content
 The project automate the creation of social media assets (OG Images, Square Posts, and Stories) whenever a new "Axiom" (a toxic argument vs. factual rebuttal) is added to the system. This allows users to quickly download and copy-paste authoritative rebuttals in online discussions.
 
 ### **Core Workflow**
-1. **Content Management**: Admin enters a "Bad Argument" and a list of "Rebuttal Facts" into Strapi.
-2. **Event-Driven Generation**: A Strapi webhook triggers the **Image Microservice**.
-3. **Image Synthesis**: The microservice uses **Satori** to generate 3 static PNG images (OG, Square, Story) with full **RTL Arabic** support.
-4. **Distribution**: Images are stored in a shared volume and made available on the **Next.js Frontend** for SEO and user download.
+1. **Content Management**: Admin enters a "Bad Argument" and a list of "Rebuttal Facts" into Strapi 5.
+2. **Background Generation**: A Strapi lifecycle hook triggers the **Image Microservice** in the background, ensuring zero database deadlocks.
+3. **Arabic-First Synthesis**: The microservice uses **Satori** + **Arabic-Reshaper** + **Bidi** to generate 3 high-fidelity PNG images (OG, Square, Story) with perfect character joining and RTL reordering.
+4. **Distribution**: Images are stored in a shared volume and made available on the **Next.js Frontend** for rich SEO previews and user downloads.
+
+---
+
+## **✨ Key Features**
+
+- **🎨 Dynamic Theming**: The entire website UI (Hero, Marquee, Cards) dynamically adapts its color palette based on the selected Category's theme.
+- **🎓 School of Logic**: A dedicated education section (`/logic`) teaching basic reasoning and how to spot common logical fallacies like "Straw Man" and "Ad Hominem".
+- **📬 Integrated Contact**: A custom-built contact form that submits user reports directly to Strapi for admin review.
+- **📱 Social Ready**: Every Axiom is optimized for sharing with dedicated Story and Post formats, including a custom header and integrated QR codes.
+- **🔍 SEO & Open Graph**: Full SSR (Server-Side Rendering) with dynamic metadata ensures that sharing a link on social media displays a beautiful, content-aware preview.
 
 ---
 
@@ -66,10 +76,18 @@ docker-compose up -d --build
 
 1. **Admin Setup**: Create your admin user at `http://localhost:1337/admin`.
 2. **API Security**: Follow the [API Token Setup Guide](./docs/API_TOKEN_SETUP.md) to link the Microservice to Strapi.
-3. **Webhook Setup**:
-   - URL: `http://microservice:4000/generate`
-   - Events: `entry.create`, `entry.update`
-4. **Category Theme**: Create a Category and assign a `themeKey` (e.g., `theme-purple`).
+3. **Permissions**: Go to **Settings > Roles > Public** and enable `find` and `findOne` for Axioms/Categories, and `create` for Messages.
+4. **Category Theme**: Create a Category and assign branding colors. The frontend and images will automatically adapt.
+
+---
+
+## **🖥️ VPS Requirements**
+
+To run the full stack comfortably, we recommend the following:
+
+- **Minimum**: 2 GB RAM (with 2GB Swap), 1 vCPU, 20 GB SSD.
+- **Recommended**: 4 GB RAM, 2 vCPUs, 40 GB SSD.
+- **OS**: Ubuntu 22.04+ or any Docker-compatible Linux distribution.
 
 ---
 

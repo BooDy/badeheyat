@@ -21,9 +21,25 @@
       "targetField": "name",
       "required": true
     },
-    "themeKey": {
+    "backgroundColor": {
       "type": "string",
-      "required": true
+      "default": "#f8fafc",
+      "customField": "plugin::color-picker.color"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#1e293b",
+      "customField": "plugin::color-picker.color"
+    },
+    "accentColor": {
+      "type": "string",
+      "default": "#3b82f6",
+      "customField": "plugin::color-picker.color"
+    },
+    "cardBackgroundColor": {
+      "type": "string",
+      "default": "#ffffff",
+      "customField": "plugin::color-picker.color"
     },
     "axioms": {
       "type": "relation",

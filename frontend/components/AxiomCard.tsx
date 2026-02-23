@@ -7,6 +7,7 @@ interface AxiomCardProps {
 }
 
 export default function AxiomCard({ axiom }: AxiomCardProps) {
+  // console.log('AxiomCard data:', JSON.stringify(axiom, null, 2));
   const imageUrl = axiom.imageSquare || `/media/axioms/${axiom.slug}-square.png`;
 
   return (
@@ -28,11 +29,17 @@ export default function AxiomCard({ axiom }: AxiomCardProps) {
       </div>
       <div className="p-4">
         {axiom.category && (
-          <span className="inline-block px-2 py-1 rounded-full bg-indigo-50 text-indigo-600 text-xs font-semibold mb-2">
+          <span 
+            className="inline-block px-2 py-1 rounded-full text-xs font-semibold mb-2"
+            style={{ 
+              backgroundColor: `${axiom.category.accentColor}11`,
+              color: axiom.category.accentColor 
+            }}
+          >
             {axiom.category.name}
           </span>
         )}
-        <h3 className="text-lg font-bold line-clamp-2 text-slate-800 group-hover:text-indigo-600 transition-colors leading-relaxed">
+        <h3 className="text-lg font-bold line-clamp-2 text-slate-800 transition-colors leading-relaxed">
           {axiom.badArgument}
         </h3>
       </div>

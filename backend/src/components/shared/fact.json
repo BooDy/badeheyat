@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_shared_facts",
+  "info": {
+    "displayName": "Fact",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
