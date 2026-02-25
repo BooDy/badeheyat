@@ -28,7 +28,7 @@ export interface Axiom {
   updatedAt: string;
 }
 
-async function fetchStrapi<T>(path: string, query?: any): Promise<T> {
+async function fetchStrapi<T>(path: string, query?: any): Promise<{ data: T; meta?: any }> {
   const queryString = query ? `?${qs.stringify(query)}` : '';
   const url = `${STRAPI_URL}/api${path}${queryString}`;
   
@@ -57,8 +57,7 @@ async function fetchStrapi<T>(path: string, query?: any): Promise<T> {
       throw new Error(`Failed to fetch from Strapi: ${res.status} ${res.statusText}`);
     }
 
-    const json = await res.json();
-    return json?.data;
+    return await res.json();
   } catch (error) {
     console.error('Fetch error:', error);
     throw error;
@@ -66,14 +65,18 @@ async function fetchStrapi<T>(path: string, query?: any): Promise<T> {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const data = await fetchStrapi<Category[]>('/categories');
-  return data || [];
+  const response = await fetchStrapi<Category[]>('/categories');
+  return response.data || [];
 }
 
-export async function getAxioms(categorySlug?: string): Promise<Axiom[]> {
+export async function getAxioms(categorySlug?: string, page: number = 1, pageSize: number = 5): Promise<{ data: Axiom[]; meta: any }> {
   const query: any = {
     populate: ['category', 'rebuttalFacts', 'references'],
     sort: ['createdAt:desc'],
+    pagination: {
+      page,
+      pageSize,
+    },
   };
 
   if (categorySlug) {
@@ -86,8 +89,7 @@ export async function getAxioms(categorySlug?: string): Promise<Axiom[]> {
     };
   }
 
-  const data = await fetchStrapi<Axiom[]>('/axioms', query);
-  return data || [];
+  return await fetchStrapi<Axiom[]>('/axioms', query);
 }
 
 export async function getAxiomBySlug(slug: string): Promise<Axiom | null> {
@@ -100,6 +102,6 @@ export async function getAxiomBySlug(slug: string): Promise<Axiom | null> {
     populate: ['category', 'rebuttalFacts', 'references'],
   };
 
-  const data = await fetchStrapi<Axiom[]>('/axioms', query);
-  return (data && data.length > 0) ? data[0] : null;
+  const response = await fetchStrapi<Axiom[]>('/axioms', query);
+  return (response.data && response.data.length > 0) ? response.data[0] : null;
 }

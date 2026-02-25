@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cairo, Kufam, Aref_Ruqaa } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
@@ -57,6 +58,9 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body className={`${cairo.variable} ${kufam.variable} ${arefRuqaa.variable} font-body antialiased bg-white text-brand-blue min-h-screen flex flex-col selection:bg-brand-red selection:text-white overflow-x-hidden`}>
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
         <header className="bg-white border-b-[8px] md:border-b-[12px] border-brand-blue py-4 md:py-6 px-4 md:px-12 sticky top-0 z-50">
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4 md:gap-6">
             <div className="flex items-center gap-4 md:gap-6 w-full lg:w-auto justify-between lg:justify-start">

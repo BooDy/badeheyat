@@ -2,6 +2,7 @@ import { getAxioms, getCategories } from '@/lib/strapi';
 import AxiomCard from '@/components/AxiomCard';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import Pagination from '@/components/Pagination';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 60;
@@ -42,17 +43,22 @@ export async function generateMetadata(): Promise<Metadata> {
 interface HomeProps {
   searchParams: {
     category?: string;
+    page?: string;
   };
 }
 
 export default async function Home({ searchParams }: HomeProps) {
   const categorySlug = searchParams.category;
-  const [axiomsData, categoriesData] = await Promise.all([
-    getAxioms(categorySlug),
+  const currentPage = parseInt(searchParams.page || '1', 10);
+  const pageSize = 5;
+
+  const [axiomsResponse, categoriesData] = await Promise.all([
+    getAxioms(categorySlug, currentPage, pageSize),
     getCategories(),
   ]);
 
-  const axioms = axiomsData || [];
+  const axioms = axiomsResponse.data || [];
+  const meta = axiomsResponse.meta || {};
   const categories = categoriesData || [];
 
   const activeCategory = categories.find((c) => c.slug === categorySlug);
@@ -191,6 +197,13 @@ export default async function Home({ searchParams }: HomeProps) {
                     </div>
                   </article>
                 ))}
+                
+                <Pagination 
+                  pageCount={meta.pagination?.pageCount || 1} 
+                  currentPage={currentPage} 
+                  categorySlug={categorySlug}
+                  theme={theme}
+                />
               </div>
             ) : (
               <div className="p-12 border-4 border-dashed text-center bg-brand-yellow" style={{ borderColor: theme.text }}>
