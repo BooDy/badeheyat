@@ -28,7 +28,7 @@ export interface Axiom {
   updatedAt: string;
 }
 
-async function fetchStrapi<T>(path: string, query?: any): Promise<{ data: T; meta?: any }> {
+async function fetchStrapi<T>(path: string, query?: any): Promise<{ data: T; meta: any }> {
   const queryString = query ? `?${qs.stringify(query)}` : '';
   const url = `${STRAPI_URL}/api${path}${queryString}`;
   
@@ -57,7 +57,11 @@ async function fetchStrapi<T>(path: string, query?: any): Promise<{ data: T; met
       throw new Error(`Failed to fetch from Strapi: ${res.status} ${res.statusText}`);
     }
 
-    return await res.json();
+    const json = await res.json();
+    return {
+      data: json.data,
+      meta: json.meta || {},
+    };
   } catch (error) {
     console.error('Fetch error:', error);
     throw error;
